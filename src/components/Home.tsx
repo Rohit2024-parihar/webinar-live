@@ -11,6 +11,7 @@ import {
   useMediaQuery,
   useTheme,
   Grid,
+  Divider,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import WebinarForm from './WebinarForm';
@@ -18,35 +19,13 @@ import WebinarInfoCard from './WebinarInfoCard';
 import { useSelector } from 'react-redux';
 import { SelectChangeEvent } from "@mui/material";
 import styles from './home.module.css';
-
-// Define the type for a webinar
-interface Webinar {
-  webinarId: string;
-  instructorName: string;
-  instructorRole: string;
-  instructorCompany: string;
-  instructorImage: string;
-  topic: string;
-  webinarTitle: string;
-  startDate: string;
-  startTime: string;
-  endTime: string;
-  [key: string]: string | null;
-}
-
-const COLORS = [
-  '#741DE3',
-  '#E72174',
-  '#08A79E',
-  '#0E51F1',
-  '#FFB023',
-  '#088761',
-];
+import { WebinarData } from '../redux/features/webinarInfoSlice';
+import { BANNERCOLORS } from '../utlis/constants';
 
 const Home: React.FC = () => {
   const theme = useTheme();
-  const webinars = useSelector((state: { user: Webinar[] }) => state.user);
-  const [filteredWebinars, setFilteredWebinars] = useState<Webinar[]>(webinars);
+  const webinars = useSelector((state: { user: WebinarData[] }) => state.user);
+  const [filteredWebinars, setFilteredWebinars] = useState<WebinarData[]>(webinars);
   const [selectedTopic, setSelectedTopic] = useState<string>('All Topics');
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -85,14 +64,14 @@ const Home: React.FC = () => {
   return (
     <Box className={styles.container}>
       {/* Header */}
-      <AppBar position="static" color="default">
+      
         <Toolbar className={styles.header}>
           <Typography variant="h6" sx={{ color: 'black' }}>
             Webinar
           </Typography>
           <WebinarForm />
         </Toolbar>
-      </AppBar>
+      <Divider/>
 
       {/* Search and Filter */}
       <Box
@@ -102,7 +81,7 @@ const Home: React.FC = () => {
       >
         <TextField
           variant="outlined"
-          placeholder="Search..."
+          placeholder="Search for webinars"
           onChange={handleSearch}
           className={`${styles.searchInput} ${
             isSmallScreen ? styles.searchInputSmall : ''
@@ -142,7 +121,7 @@ const Home: React.FC = () => {
             key={webinar.webinarId || index}
           >
             <WebinarInfoCard
-              color={COLORS[index % COLORS.length]}
+              color={BANNERCOLORS[index % BANNERCOLORS.length]}
               data={webinar}
             />
           </Grid>

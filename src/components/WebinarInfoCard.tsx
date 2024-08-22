@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteData } from '../redux/features/webinarInfoSlice';
+import { deleteData, WebinarData } from '../redux/features/webinarInfoSlice';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
@@ -9,21 +9,8 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import WebinarForm from './WebinarForm';
 import styles from './webinarinfocard.module.css';
+import { convertTo12HourFormat, formatDateWithDay } from '../utlis/formattingUtils';
 
-// Define the type for the data prop
-interface WebinarData {
-  webinarId: string;
-  instructorName: string;
-  instructorRole: string;
-  instructorCompany: string;
-  instructorImage: string;
-  topic: string;
-  webinarTitle: string;
-  startDate: string;
-  startTime: string;
-  endTime: string;
-  [key: string]: string | null;
-}
 
 // Define the type for props
 interface WebinarInfoCardProps {
@@ -34,15 +21,7 @@ interface WebinarInfoCardProps {
 const WebinarInfoCard: React.FC<WebinarInfoCardProps> = ({ color, data }) => {
   const [edit, setEdit] = useState(false);
   const dispatch = useDispatch();
-
-  const dayName = new Date(data.startDate).toLocaleDateString('en-US', {
-    weekday: 'long',
-  });
-  const formattedDate = new Date(data.startDate).toLocaleDateString('en-US', {
-    month: 'short',
-    year: '2-digit',
-  });
-
+  
   return (
     <Card className={styles.cardContainer} orientation="vertical">
       <CardContent>
@@ -77,7 +56,7 @@ const WebinarInfoCard: React.FC<WebinarInfoCardProps> = ({ color, data }) => {
           </AspectRatio>
         </Card>
       </CardContent>
-      <Typography className={styles.topic} aria-describedby="card-description">
+      <Typography className={styles.topic} sx={{ color: color }} aria-describedby="card-description">
         {data.topic}
       </Typography>
       <Typography
@@ -91,7 +70,7 @@ const WebinarInfoCard: React.FC<WebinarInfoCardProps> = ({ color, data }) => {
         className={styles.schedule}
         aria-describedby="card-description"
       >
-        {`${dayName} • ${formattedDate}, ${data.startTime} - ${data.endTime}`}
+        {`${formatDateWithDay(data.startDate).dayName} • ${formatDateWithDay(data.startDate).formattedDate}, ${data.startTime} - ${convertTo12HourFormat(data.endTime)}`}
       </Typography>
 
       <Box sx={{ display: 'flex', marginRight: '8px' }}>

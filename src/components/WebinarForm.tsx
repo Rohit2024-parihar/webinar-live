@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addData, updateData } from "../redux/features/webinarInfoSlice";
+import { addData, updateData, WebinarData } from "../redux/features/webinarInfoSlice";
 import {
   Dialog,
   DialogTitle,
@@ -24,33 +24,17 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import styles from "./webinarform.module.css";
 
-// Define the form values type
-interface FormValues {
-  webinarId: string;
-  instructorName: string;
-  instructorRole: string;
-  instructorCompany: string;
-  instructorImage: string | null;
-  topic: string;
-  webinarTitle: string;
-  startDate: string;
-  startTime: string;
-  endTime: string;
-  [key: string]: string | null; // Index signature to allow string indexing
-}
-
-
-const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<React.SetStateAction<boolean>> }> = ({ editMode = false, setEdit = () => {} }) => {
+const WebinarForm: React.FC<{ editMode?: WebinarData; setEdit?: React.Dispatch<React.SetStateAction<boolean>> }> = ({ editMode = false, setEdit = () => {} }) => {
   const [open, setOpen] = useState(editMode !== false);
   const dispatch = useDispatch();
 
   // Define initial form state
-  const initialFormState: FormValues = {
+  const initialFormState: WebinarData = {
     webinarId: uuidv4(),
     instructorName: "",
     instructorRole: "",
     instructorCompany: "",
-    instructorImage: null,
+    instructorImage: "",
     topic: "",
     webinarTitle: "",
     startDate: "",
@@ -58,8 +42,8 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
     endTime: "",
   };
 
-  const [formValues, setFormValues] = useState<FormValues>(
-    editMode ? (editMode as FormValues) : initialFormState
+  const [formValues, setFormValues] = useState<WebinarData>(
+    editMode ? (editMode as WebinarData) : initialFormState
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -74,7 +58,7 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
     // Type assertion to let TypeScript know `name` is a valid key of `FormValues`
     setFormValues(prev => ({
       ...prev,
-      [name as keyof FormValues]: value,
+      [name as keyof WebinarData]: value,
     }));
   };
   
@@ -92,7 +76,7 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
   
 
   const validate = (): boolean => {
-    const requiredFields: (keyof FormValues)[] = [
+    const requiredFields: (keyof WebinarData)[] = [
       "instructorName",
       "instructorRole",
       "instructorCompany",
@@ -151,7 +135,6 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
       {!editMode && (
         <Button
           variant="contained"
-          color="primary"
           className={styles.addWebinarButton}
           onClick={() => setOpen(true)}
         >
@@ -159,16 +142,16 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
         </Button>
       )}
 
-      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth className={styles.dialogBox}>
+      <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
         <DialogTitle className={styles.dialogTitle}>
-          <Typography variant="h6">Create Webinar</Typography>
+          <Typography variant="h6" fontWeight={600}>Create Webinar</Typography>
           <IconButton onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent>
           <Divider />
-          <Box sx={{ marginBottom: 4, marginTop: 4 }}>
+          <Box sx={{ marginBottom: 2, marginTop: 2 }}>
             <Typography
               variant="h6"
               gutterBottom
@@ -204,6 +187,11 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
                       onChange={handleInputChange}
                       error={Boolean(errors[name])}
                       helperText={errors[name]}
+                      InputProps={{
+                        sx: {
+                            backgroundColor: '#E3E7EC',
+                        },
+                      }}
                     />
                   </FormControl>
                 ))}
@@ -242,6 +230,11 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
                     onChange={handleInputChange}
                     error={Boolean(errors.topic)}
                     helperText={errors.topic}
+                    InputProps={{
+                      sx: {
+                          backgroundColor: '#E3E7EC',
+                      },
+                    }}
                   />
                 </FormControl>
               </Grid>
@@ -264,21 +257,21 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
                   name: "startDate",
                   label: "Start Date",
                   xs: 12,
-                  sm: 6,
+                  sm: 4,
                   type: "date",
                 },
                 {
                   name: "startTime",
                   label: "Start Time",
                   xs: 12,
-                  sm: 6,
+                  sm: 4,
                   type: "time",
                 },
                 {
                   name: "endTime",
                   label: "End Time",
                   xs: 12,
-                  sm: 6,
+                  sm: 4,
                   type: "time",
                 },
               ].map(({ name, label, xs, sm, type }) => (
@@ -296,6 +289,11 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
                       onChange={handleInputChange}
                       error={Boolean(errors[name])}
                       helperText={errors[name]}
+                      InputProps={{
+                        sx: {
+                            backgroundColor: '#E3E7EC',
+                        },
+                      }}
                     />
                   </FormControl>
                 </Grid>
@@ -306,13 +304,13 @@ const WebinarForm: React.FC<{ editMode?: FormValues; setEdit?: React.Dispatch<Re
           <Box className={styles.submitButtons}>
             <Button
               variant="contained"
-              color="primary"
+              className={styles.buttonConfirm}
               sx={{ marginRight: 2 }}
               onClick={handleSubmit}
             >
               {editMode ? "Update Webinar" : "Create Webinar"}
             </Button>
-            <Button variant="outlined" color="secondary" onClick={handleClose}>
+            <Button  className={styles.buttonEdit} onClick={handleClose}>
               Cancel
             </Button>
           </Box>

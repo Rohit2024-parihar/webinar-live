@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
 
 // Define the type for a webinardetails
-interface Webinar {
+export interface WebinarData {
   webinarId: string;
   instructorName: string;
   instructorRole: string;
@@ -13,10 +13,12 @@ interface Webinar {
   startDate: string;
   startTime: string;
   endTime: string;
+  [key: string]: string | null;
+
 }
 
 // Define the initial state type
-type WebinarState = Webinar[];
+type WebinarState = WebinarData[];
 
 // Initial state
 const initialState: WebinarState = [
@@ -30,7 +32,7 @@ const initialState: WebinarState = [
     webinarTitle: 'Webpack',
     startDate: '2024-08-22',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '14:50',
   },
   {
     webinarId: uuidv4(),
@@ -42,7 +44,7 @@ const initialState: WebinarState = [
     webinarTitle: 'CI CD Pipeline',
     startDate: '2024-08-26',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '22:00',
   },
   {
     webinarId: uuidv4(),
@@ -54,7 +56,7 @@ const initialState: WebinarState = [
     webinarTitle: 'Low Level Design',
     startDate: '2024-08-25',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '14:50',
   },
   {
     webinarId: uuidv4(),
@@ -66,7 +68,7 @@ const initialState: WebinarState = [
     webinarTitle: 'Automation Testing',
     startDate: '2024-08-22',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '17:50',
   },
   {
     webinarId: uuidv4(),
@@ -78,7 +80,7 @@ const initialState: WebinarState = [
     webinarTitle: 'Hooks in React',
     startDate: '2024-08-22',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '21:50',
   },
   {
     webinarId: uuidv4(),
@@ -90,7 +92,7 @@ const initialState: WebinarState = [
     webinarTitle: 'Top Design Patter in Java',
     startDate: '2024-08-28',
     startTime: '12:34',
-    endTime: '04:50 PM',
+    endTime: '18:50',
   },
   
 ];
@@ -99,13 +101,13 @@ const webinarInfoSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addData: (state, action: PayloadAction<Webinar>) => {
+    addData: (state, action: PayloadAction<WebinarData>) => {
       state.unshift(action.payload);
     },
     deleteData: (state, action: PayloadAction<{ webinarId: string }>) => {
       return state.filter(user => user.webinarId !== action.payload.webinarId);
     },
-    updateData: (state, action: PayloadAction<Webinar>) => {
+    updateData: (state, action: PayloadAction<WebinarData>) => {
       return state.map(user =>
         user.webinarId === action.payload.webinarId ? action.payload : user
       );
