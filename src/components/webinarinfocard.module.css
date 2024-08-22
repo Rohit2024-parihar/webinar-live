@@ -1,0 +1,92 @@
+.cardContainer {
+  margin-right: 24px;
+  margin-bottom: 24px; /* Add bottom margin for spacing between rows */
+}
+
+.card {
+  width: 90%; /* Make the card width 100% and control the size through the container */
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.instructorImage {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.instructorTitle {
+  color: white !important; /* Adding !important to enforce the style */
+}
+
+.topic {
+  color: #741de3 !important; /* Adding !important */
+  display: flex;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.webinarTitle {
+  padding: 0;
+  color: #0e1013 !important; /* Adding !important */
+  display: flex;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.schedule {
+  color: #0e1013 !important; /* Adding !important */
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.buttonDelete {
+  background-color: #f9e8e8 !important; /* Adding !important */
+  color: #d14040 !important; /* Adding !important */
+  transition: none; /* Remove transition effects */
+}
+
+.buttonDelete:hover {
+  background-color: #f9e8e8 !important; /* Adding !important */
+  color: #d14040 !important; /* Adding !important */
+}
+
+.buttonEdit {
+  background-color: white !important; /* Adding !important */
+  color: black !important; /* Adding !important */
+  transition: none; /* Remove transition effects */
+}
+
+.buttonEdit:hover {
+  background-color: white !important; /* Adding !important */
+  color: black !important; /* Adding !important */
+}
+
+.aspectRatio {
+  width: 90px;
+  height: 90px;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+  .cardContainer {
+    width: 90%; /* 3 cards per row */
+  }
+}
+
+@media (max-width: 900px) {
+  .cardContainer {
+    width: 90%; /* 2 cards per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .cardContainer {
+    width: 90%; /* 1 card per row */
+    margin-right: 0; /* Remove margin for full-width cards */
+  }
+}
