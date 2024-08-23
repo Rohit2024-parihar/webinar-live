@@ -81,17 +81,17 @@
   margin-right: 16px;
 }
 .buttonConfirm {
-  background-color: #0e51f1 !important; 
-  color: #ffffff !important; 
-  transition: none; 
+  background-color: #0e51f1 !important;
+  color: #ffffff !important;
+  transition: none;
   font-size: 16px;
   border-radius: 10px !important;
   font-family: 600;
 }
 .buttonEdit {
   background-color: white !important;
-  color: #0e51f1 !important; 
-  transition: none; 
+  color: #0e51f1 !important;
+  transition: none;
   border-radius: 25px;
   font-weight: 600;
 }

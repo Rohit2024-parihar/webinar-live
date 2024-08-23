@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addData, updateData, WebinarData } from "../redux/features/webinarInfoSlice";
+import { addData, updateData, IWebinarData } from "../redux/features/webinarInfoSlice";
 import {
   Dialog,
   DialogTitle,
@@ -22,14 +22,15 @@ import {
   AddPhotoAlternate as AddPhotoAlternateIcon,
 } from "@mui/icons-material";
 import { v4 as uuidv4 } from "uuid";
-import styles from "./webinarform.module.css";
+import styles from "./WebinarForm.module.css";
+import { validateForm } from "../utlis/formValidation";
 
-const WebinarForm: React.FC<{ editMode?: WebinarData; setEdit?: React.Dispatch<React.SetStateAction<boolean>> }> = ({ editMode = false, setEdit = () => {} }) => {
+const WebinarForm: React.FC<{ editMode?: IWebinarData; setEdit?: React.Dispatch<React.SetStateAction<boolean>> }> = ({ editMode = false, setEdit = () => {} }) => {
   const [open, setOpen] = useState(editMode !== false);
   const dispatch = useDispatch();
 
   // Define initial form state
-  const initialFormState: WebinarData = {
+  const initialFormState: IWebinarData = {
     webinarId: uuidv4(),
     instructorName: "",
     instructorRole: "",
@@ -42,8 +43,8 @@ const WebinarForm: React.FC<{ editMode?: WebinarData; setEdit?: React.Dispatch<R
     endTime: "",
   };
 
-  const [formValues, setFormValues] = useState<WebinarData>(
-    editMode ? (editMode as WebinarData) : initialFormState
+  const [formValues, setFormValues] = useState<IWebinarData>(
+    editMode ? (editMode as IWebinarData) : initialFormState
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -58,11 +59,10 @@ const WebinarForm: React.FC<{ editMode?: WebinarData; setEdit?: React.Dispatch<R
     // Type assertion to let TypeScript know `name` is a valid key of `FormValues`
     setFormValues(prev => ({
       ...prev,
-      [name as keyof WebinarData]: value,
+      [name as keyof IWebinarData]: value,
     }));
   };
   
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     // Ensure that files is not null and has at least one file
     if (e.target.files && e.target.files.length > 0) {
@@ -75,44 +75,8 @@ const WebinarForm: React.FC<{ editMode?: WebinarData; setEdit?: React.Dispatch<R
   };
   
 
-  const validate = (): boolean => {
-    const requiredFields: (keyof WebinarData)[] = [
-      "instructorName",
-      "instructorRole",
-      "instructorCompany",
-      "topic",
-      "webinarTitle",
-      "startDate",
-      "startTime",
-      "endTime",
-    ];
-  
-    // Define tempErrors with the appropriate type
-    const tempErrors: Record<string, string> = requiredFields.reduce((acc, field) => {
-      // Cast `field` to `string` to use string methods
-      const fieldName = field as string;
-      acc[fieldName] = formValues[field]
-        ? ""
-        : `${fieldName.split(/(?=[A-Z])/).join(" ")} is required.`;
-      return acc;
-    }, {} as Record<string, string>);
-  
-    if (formValues.startTime && formValues.endTime) {
-      const start = new Date(`1970-01-01T${formValues.startTime}:00`);
-      const end = new Date(`1970-01-01T${formValues.endTime}:00`);
-      if (start >= end) {
-        tempErrors.endTime = "End time must be after start time.";
-      }
-    }
-  
-    setErrors(tempErrors);
-    return Object.values(tempErrors).every((x) => !x);
-  
-  };
-  
-
   const handleSubmit = () => {
-    if (validate()) {
+    if (validateForm(formValues, setErrors)) {
       // Ensure instructorImage is a string
       const formData = {
         ...formValues,

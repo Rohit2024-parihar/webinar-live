@@ -1,3 +1,7 @@
+// Capitalize the first letter of each topic for display purposes
+export const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
+
 export const convertTo12HourFormat = (time24: string) => {
     const [hours, minutes] = time24.split(':');
     const date = new Date();

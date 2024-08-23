@@ -3,7 +3,7 @@ import webinarReducer from './features/webinarInfoSlice';
 
 export const store = configureStore({
   reducer: {
-    user: webinarReducer,
+    webinars: webinarReducer,
   },
 });
 

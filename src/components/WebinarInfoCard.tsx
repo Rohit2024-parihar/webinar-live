@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteData, WebinarData } from '../redux/features/webinarInfoSlice';
+import { deleteData, IWebinarData } from '../redux/features/webinarInfoSlice';
 import AspectRatio from '@mui/joy/AspectRatio';
 import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
@@ -8,14 +8,14 @@ import Typography from '@mui/joy/Typography';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import WebinarForm from './WebinarForm';
-import styles from './webinarinfocard.module.css';
+import styles from './WebinarInfoCard.module.css';
 import { convertTo12HourFormat, formatDateWithDay } from '../utlis/formattingUtils';
 
 
 // Define the type for props
 interface WebinarInfoCardProps {
   color: string;
-  data: WebinarData;
+  data: IWebinarData;
 }
 
 const WebinarInfoCard: React.FC<WebinarInfoCardProps> = ({ color, data }) => {
@@ -41,7 +41,7 @@ const WebinarInfoCard: React.FC<WebinarInfoCardProps> = ({ color, data }) => {
                 aria-describedby="card-description"
                 mb={key === 'instructorCompany' ? 1 : 0}
               >
-                {data[key as keyof WebinarData]}
+                {data[key as keyof IWebinarData]}
               </Typography>
             ))}
           </CardContent>
